@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entre Mundos Lab</title>
+
+    <!-- Fontes: Orbitron para títulos sci-fi, Space Grotesk para subtítulos, Inter para texto corrido -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@400;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Paleta Principal */
+            --preto-absoluto: #000000;
+            --rosa-magenta: #FF2A85;
+            --rosa-magenta-glow: #FF1493;
+            --violeta-eletrico: #7B2CBF;
+            --violeta-profundo: #4A0E4E;
+
+            /* Paleta Expandida */
+            --azul-ciano: #00F0FF;
+            --cinza-espacial: #121214;
+            --branco-ultravioleta: #F5F0F6;
+
+            /* Funcionais */
+            --surface: #0d0d12;
+            --surface-elevated: #15151c;
+            --border: #2a2a38;
+            --text: #e0dce8;
+            --text-secondary: #9a94a8;
+            --tag-bg: #1a1a24;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #eab308;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--preto-absoluto);
+            color: var(--text);
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            /* Fundo com textura sutil de grade + vórtice desfocado no canto */
+            background-image:
+                /* Grade de frequência sutil */
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(123, 44, 191, 0.03) 2px, rgba(123, 44, 191, 0.03) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(123, 44, 191, 0.03) 2px, rgba(123, 44, 191, 0.03) 4px),
+                /* Vórtice desfocado no fundo */
+                radial-gradient(ellipse at 50% 0%, rgba(123, 44, 191, 0.25) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(255, 42, 133, 0.12) 0%, transparent 55%),
+                radial-gradient(ellipse at 20% 80%, rgba(0, 240, 255, 0.08) 0%, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        /* Animações */
+        @keyframes vortexSpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes vortexPulse {
+            0%, 100% {
+                box-shadow:
+                    0 0 30px rgba(255, 42, 133, 0.5),
+                    0 0 60px rgba(123, 44, 191, 0.4),
+                    0 0 90px rgba(0, 240, 255, 0.2),
+                    inset 0 0 30px rgba(255, 42, 133, 0.1);
+            }
+            50% {
+                box-shadow:
+                    0 0 50px rgba(255, 42, 133, 0.7),
+                    0 0 100px rgba(123, 44, 191, 0.6),
+                    0 0 150px rgba(0, 240, 255, 0.3),
+                    inset 0 0 50px rgba(123, 44, 191, 0.2);
+            }
+        }
+
+        @keyframes sparkle1 {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+        @keyframes sparkle2 {
+            0%, 100% { opacity: 1; transform: scale(1.3); }
+            50% { opacity: 0.3; transform: scale(0.8); }
+        }
+        @keyframes sparkle3 {
+            0%, 100% { opacity: 0.6; transform: scale(0.9); }
+            30% { opacity: 1; transform: scale(1.6); }
+            60% { opacity: 0.2; transform: scale(0.7); }
+        }
+
+        @keyframes scanlines {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 4px; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes glitchText {
+            0%, 100% { text-shadow: 2px 2px 0 var(--rosa-magenta), -2px -2px 0 var(--azul-ciano); }
+            25% { text-shadow: -2px 2px 0 var(--violeta-eletrico), 2px -2px 0 var(--rosa-magenta); }
+            50% { text-shadow: 2px -2px 0 var(--azul-ciano), -2px 2px 0 var(--violeta-eletrico); }
+            75% { text-shadow: -2px -2px 0 var(--rosa-magenta), 2px 2px 0 var(--azul-ciano); }
+        }
+
+        .container {
+            max-width: 960px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            padding: 2rem 1rem 4rem;
+            animation: fadeInUp 0.8s ease;
+            position: relative;
+        }
+
+        /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           LOGO / SELO CENTRAL
+           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+        .logo-section {
+            text-align: center;
+            padding: 2.5rem 1rem 0.5rem;
+            position: relative;
+        }
+
+        /* Moldura circular externa */
+        .seal-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 1.5rem;
+        }
+
+        /* Anel externo - moldura/selo */
+        .seal-outer-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            background: conic-gradient(
+                from 0deg,
+                var(--rosa-magenta) 0deg,
+                var(--violeta-eletrico) 90deg,
+                var(--azul-ciano) 180deg,
+                var(--violeta-eletrico) 270deg,
+                var(--rosa-magenta) 360deg
+            );
+            mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+            -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+            animation: vortexSpin 10s linear infinite;
+        }
+
+        /* Glow pulsante externo */
+        .seal-glow {
+            position: absolute;
+            inset: -18px;
+            border-radius: 50%;
+            animation: vortexPulse 3s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Interior do selo - o vórtice */
+        .seal-vortex {
+            position: absolute;
+            inset: 16px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%,
+                rgba(255, 42, 133, 0.5) 0%,
+                rgba(123, 44, 191, 0.5) 25%,
+                rgba(74, 14, 78, 0.7) 50%,
+                rgba(0, 0, 0, 0.95) 80%
+            );
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Espirais internas do vórtice */
+        .seal-spiral {
+            position: absolute;
+            inset: -40%;
+            background: conic-gradient(
+                from 0deg,
+                transparent 0%,
+                rgba(255, 42, 133, 0.4) 10%,
+                transparent 20%,
+                rgba(0, 240, 255, 0.3) 35%,
+                transparent 45%,
+                rgba(123, 44, 191, 0.5) 60%,
+                transparent 70%,
+                rgba(255, 42, 133, 0.3) 85%,
+                transparent 100%
+            );
+            animation: vortexSpin 15s linear infinite reverse;
+            opacity: 0.8;
+        }
+
+        .seal-spiral-2 {
+            position: absolute;
+            inset: -20%;
+            background: conic-gradient(
+                from 120deg,
+                transparent 0%,
+                rgba(0, 240, 255, 0.35) 15%,
+                transparent 30%,
+                rgba(255, 42, 133, 0.3) 50%,
+                transparent 65%,
+                rgba(123, 44, 191, 0.4) 80%,
+                transparent 100%
+            );
+            animation: vortexSpin 9s linear infinite;
+            opacity: 0.7;
+        }
+
+        /* Centro brilhante do vórtice */
+        .seal-center {
+            position: absolute;
+            inset: 38%;
+            border-radius: 50%;
+            background: radial-gradient(circle,
+                rgba(255, 240, 255, 0.95) 0%,
+                rgba(255, 42, 133, 0.5) 30%,
+                rgba(123, 44, 191, 0.2) 60%,
+                transparent 100%
+            );
+            box-shadow: 0 0 25px rgba(255, 200, 230, 0.5);
+        }
+
+        /* Estrelas de 4 pontas (sparkles) ao redor do selo */
+        .sparkle {
+            position: absolute;
+            pointer-events: none;
+            z-index: 2;
+        }
+        .sparkle::before,
+        .sparkle::after {
+            content: '';
+            position: absolute;
+            background: #fff;
+            border-radius: 2px;
+        }
+        .sparkle::before {
+            width: 3px;
+            height: 14px;
+            left: 6px;
+            top: -2px;
+            box-shadow: 0 0 6px var(--azul-ciano), 0 0 12px var(--azul-ciano);
+        }
+        .sparkle::after {
+            width: 14px;
+            height: 3px;
+            left: 0;
+            top: 4px;
+            box-shadow: 0 0 6px var(--rosa-magenta), 0 0 12px var(--rosa-magenta);
+        }
+
+        .sparkle-1 {
+            top: -10px;
+            right: 15px;
+            animation: sparkle1 2.5s ease-in-out infinite;
+        }
+        .sparkle-2 {
+            bottom: 5px;
+            left: -8px;
+            animation: sparkle2 3.2s ease-in-out infinite;
+            animation-delay: 0.5s;
+        }
+        .sparkle-3 {
+            top: 40px;
+            left: -20px;
+            animation: sparkle3 2.8s ease-in-out infinite;
+            animation-delay: 1.2s;
+        }
+        .sparkle-4 {
+            bottom: 20px;
+            right: -12px;
+            animation: sparkle1 3.5s ease-in-out infinite;
+            animation-delay: 0.8s;
+        }
+
+        /* Linhas de frequência abaixo do selo */
+        .frequency-lines {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 3px;
+            height: 30px;
+            margin: 0 auto 0;
+            opacity: 0.7;
+        }
+        .freq-bar {
+            width: 3px;
+            border-radius: 1px;
+            background: var(--rosa-magenta);
+            box-shadow: 0 0 6px var(--rosa-magenta-glow);
+            animation: freqPulse 1.5s ease-in-out infinite;
+        }
+        .freq-bar:nth-child(odd) {
+            background: var(--azul-ciano);
+            box-shadow: 0 0 6px var(--azul-ciano);
+            animation-delay: 0.3s;
+        }
+        .freq-bar:nth-child(1) { height: 8px; animation-delay: 0s; }
+        .freq-bar:nth-child(2) { height: 18px; animation-delay: 0.1s; }
+        .freq-bar:nth-child(3) { height: 28px; animation-delay: 0.2s; }
+        .freq-bar:nth-child(4) { height: 14px; animation-delay: 0.05s; }
+        .freq-bar:nth-child(5) { height: 24px; animation-delay: 0.35s; }
+        .freq-bar:nth-child(6) { height: 10px; animation-delay: 0.15s; }
+        .freq-bar:nth-child(7) { height: 20px; animation-delay: 0.4s; }
+        .freq-bar:nth-child(8) { height: 26px; animation-delay: 0.25s; }
+        .freq-bar:nth-child(9) { height: 6px; animation-delay: 0.5s; }
+        .freq-bar:nth-child(10) { height: 16px; animation-delay: 0.3s; }
+        .freq-bar:nth-child(11) { height: 22px; animation-delay: 0.1s; }
+        .freq-bar:nth-child(12) { height: 12px; animation-delay: 0.45s; }
+        .freq-bar:nth-child(13) { height: 30px; animation-delay: 0.55s; }
+        .freq-bar:nth-child(14) { height: 8px; animation-delay: 0.6s; }
+        .freq-bar:nth-child(15) { height: 18px; animation-delay: 0.7s; }
+
+        @keyframes freqPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Logo texto principal */
+        .logo-text {
+            font-family: 'Orbitron', 'Impact', sans-serif;
+            font-size: 2.4rem;
+            font-weight: 900;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #ffffff;
+            animation: glitchText 5s ease-in-out infinite;
+            line-height: 1.1;
+            margin-top: 0.5rem;
+        }
+
+        .logo-subtitle {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.95rem;
+            letter-spacing: 0.25em;
+            color: var(--azul-ciano);
+            text-transform: uppercase;
+            margin-top: 0.4rem;
+            font-weight: 600;
+            text-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+        }
+
+        .slogan {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+            font-style: italic;
+            letter-spacing: 0.04em;
+        }
+
+        /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           SAUDAÇÕES
+           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+        .greeting {
+            background: var(--surface-elevated);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--rosa-magenta);
+            border-radius: 0 12px 12px 0;
+            padding: 1.5rem 1.8rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: var(--text);
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .greeting::before {
+            content: '🔮';
+            position: absolute;
+            top: -16px;
+            left: -12px;
+            font-size: 1.6rem;
+            filter: drop-shadow(0 0 6px var(--violeta-eletrico));
+        }
+
+        .greeting strong {
+            color: var(--rosa-magenta);
+        }
+
+        /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           SEÇÕES DO GERADOR
+           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+        .section {
+            background: var(--surface-elevated);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem 1.8rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .section:hover {
+            border-color: rgba(255, 42, 133, 0.4);
+            box-shadow: 0 0 25px rgba(255, 42, 133, 0.08);
+        }
+
+        .section h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            color: var(--branco-ultravioleta);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .section h2 .icon {
+            font-size: 1.2rem;
+        }
+
+        .option-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .option-btn {
+            background: var(--tag-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.7rem 1.1rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.84rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-secondary);
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex: 1 1 auto;
+            min-width: 130px;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .option-btn:hover {
+            border-color: var(--azul-ciano);
+            color: var(--branco-ultravioleta);
+            background: #1e1e2c;
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.1);
+        }
+
+        .option-btn.selected {
+            background: #1a0a20;
+            border-color: var(--rosa-magenta);
+            color: #fff;
+            font-weight: 700;
+            box-shadow: 0 0 20px rgba(255, 42, 133, 0.25);
+        }
+
+        .option-btn.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            text-decoration: line-through;
+            pointer-events: none;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .checkbox-btn {
+            background: var(--tag-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.6rem 1rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-secondary);
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox-btn:hover {
+            border-color: var(--azul-ciano);
+            color: var(--branco-ultravioleta);
+        }
+
+        .checkbox-btn.checked {
+            background: #0a1a1f;
+            border-color: var(--azul-ciano);
+            color: var(--azul-ciano);
+            font-weight: 700;
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
+        }
+
+        .input-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .input-row label {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .input-row input[type="radio"] {
+            accent-color: var(--rosa-magenta);
+            margin-right: 0.3rem;
+        }
+
+        .input-row input[type="text"],
+        .input-row textarea {
+            background: var(--tag-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
+            color: var(--branco-ultravioleta);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.88rem;
+            flex: 1;
+            min-width: 200px;
+            resize: vertical;
+        }
+
+        .input-row input:focus,
+        .input-row textarea:focus {
+            outline: none;
+            border-color: var(--azul-ciano);
+            box-shadow: 0 0 14px rgba(0, 240, 255, 0.2);
+        }
+
+        textarea {
+            min-height: 70px;
+        }
+
+        /* Botão Gerar */
+        .generate-btn {
+            background: linear-gradient(135deg, var(--rosa-magenta), var(--violeta-eletrico));
+            border: none;
+            border-radius: 14px;
+            padding: 1.1rem 2rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 0.08em;
+            width: 100%;
+            text-align: center;
+            margin-top: 0.5rem;
+            box-shadow: 0 8px 30px rgba(255, 42, 133, 0.3);
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .generate-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transition: left 0.5s;
+        }
+
+        .generate-btn:hover::before {
+            left: 100%;
+        }
+
+        .generate-btn:hover {
+            box-shadow: 0 12px 45px rgba(255, 42, 133, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .generate-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* Caixa de saída */
+        .output-box {
+            background: #08080d;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.8rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.83rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+            color: var(--text);
+            line-height: 1.7;
+            max-height: 500px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .output-box.empty {
+            color: #555;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--surface-elevated);
+            border: 1px solid var(--azul-ciano);
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.78rem;
+            cursor: pointer;
+            color: var(--azul-ciano);
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .copy-btn:hover {
+            background: rgba(0, 240, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+            color: #fff;
+        }
+
+        /* Feedback */
+        .feedback-box textarea,
+        .feedback-box input {
+            width: 100%;
+            background: var(--tag-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 0.8rem 1rem;
+            color: var(--branco-ultravioleta);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.88rem;
+            resize: vertical;
+            margin-bottom: 0.5rem;
+        }
+
+        .feedback-box textarea:focus,
+        .feedback-box input:focus {
+            outline: none;
+            border-color: var(--azul-ciano);
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
+        }
+
+        .feedback-submit {
+            background: var(--azul-ciano);
+            border: none;
+            border-radius: 10px;
+            padding: 0.7rem 1.5rem;
+            color: #000;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            transition: all 0.2s;
+        }
+
+        .feedback-submit:hover {
+            box-shadow: 0 0 22px rgba(0, 240, 255, 0.5);
+            transform: translateY(-1px);
+        }
+
+        .feedback-status {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        /* Botão Espertalhões */
+        .hacker-btn {
+            background: transparent;
+            border: 1px dashed #333;
+            border-radius: 8px;
+            padding: 0.6rem 1.2rem;
+            color: #555;
+            cursor: pointer;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.78rem;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .hacker-btn:hover {
+            border-color: var(--danger);
+            color: var(--danger);
+            box-shadow: 0 0 18px rgba(239, 68, 68, 0.3);
+        }
+
+        /* Modal Hacker */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .modal-overlay.active { display: flex; }
+
+        .modal {
+            background: #0a0a0f;
+            border: 2px solid var(--danger);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 0 60px rgba(239, 68, 68, 0.4);
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .modal h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--danger);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .modal .hash-display {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.72rem;
+            color: var(--azul-ciano);
+            word-break: break-all;
+            margin: 1rem 0;
+            text-align: left;
+            line-height: 1.6;
+        }
+
+        .modal input {
+            width: 100%;
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 0.8rem 1rem;
+            color: var(--azul-ciano);
+            font-family: 'Courier New', monospace;
+            font-size: 0.88rem;
+            margin: 0.5rem 0;
+        }
+
+        .modal .timer {
+            color: var(--warning);
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .modal .btn-danger {
+            background: var(--danger);
+            border: none;
+            border-radius: 8px;
+            padding: 0.7rem 1.4rem;
+            color: #fff;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            margin: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .modal .btn-close {
+            background: transparent;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 0.7rem 1.4rem;
+            color: #aaa;
+            cursor: pointer;
+            margin: 0.5rem;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .modal .hacker-response {
+            color: var(--danger);
+            margin-top: 1rem;
+            font-size: 0.82rem;
+            display: none;
+            font-family: 'Inter', sans-serif;
+        }
+        .modal .hacker-response.show { display: block; animation: fadeInUp 0.4s ease; }
+
+        /* Footer */
+        .footer-note {
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.76rem;
+            color: #444;
+            padding: 1rem 0 0;
+        }
+
+        .warning {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--danger);
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
+            color: var(--danger);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.83rem;
+            display: none;
+            margin-top: 0.5rem;
+        }
+        .warning.visible { display: block; }
+
+        /* Responsivo */
+        @media (max-width: 600px) {
+            .container { padding: 1rem 0.5rem 3rem; }
+            .section { padding: 1rem 1.2rem; }
+            .option-btn { min-width: 100%; flex: 1 1 100%; }
+            .logo-text { font-size: 1.6rem; letter-spacing: 0.06em; }
+            .seal-container { width: 150px; height: 150px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- ═══════════════ LOGO / SELO ═══════════════ -->
+        <header class="logo-section">
+            <div class="seal-container">
+                <div class="seal-glow"></div>
+                <div class="seal-outer-ring"></div>
+                <div class="seal-vortex">
+                    <div class="seal-spiral"></div>
+                    <div class="seal-spiral-2"></div>
+                    <div class="seal-center"></div>
+                </div>
+                <!-- Sparkles místicos -->
+                <div class="sparkle sparkle-1"></div>
+                <div class="sparkle sparkle-2"></div>
+                <div class="sparkle sparkle-3"></div>
+                <div class="sparkle sparkle-4"></div>
+            </div>
+            <div class="frequency-lines">
+                <div class="freq-bar"></div><div class="freq-bar"></div><div class="freq-bar"></div>
+                <div class="freq-bar"></div><div class="freq-bar"></div><div class="freq-bar"></div>
+                <div class="freq-bar"></div><div class="freq-bar"></div><div class="freq-bar"></div>
+                <div class="freq-bar"></div><div class="freq-bar"></div><div class="freq-bar"></div>
+                <div class="freq-bar"></div><div class="freq-bar"></div><div class="freq-bar"></div>
+            </div>
+            <div class="logo-text">Entre Mundos Lab</div>
+            <div class="logo-subtitle">Laboratório Entre Mundos</div>
+            <p class="slogan">✦ Aqui todas as suas ideias se tornam reais. ✦</p>
+        </header>
+
+        <!-- ═══════════════ SAUDAÇÕES ═══════════════ -->
+        <div class="greeting">
+            Saudações, <strong>usuárix</strong>! 👽<br><br>
+            Se está aqui, é <strong>amiguinhx</strong> e poderá seguir. E não deixe de deixar seu
+            <strong>feedback</strong> com ideias, sugestões, reclamações, na caixinha que vem logo após o
+            prompt gerado para seu uso no ChatGPT. Isso é o <strong>mínimo</strong>. 🥲<br><br>
+            Escolhi para ChatGPT porque fica um prompt acessível, de uso fácil e gratuito. <em>(…)</em><br><br>
+            Para o caso de você <strong>não ser amiguinhx</strong>, fique à vontade, e deixe também seus
+            comentários na caixinha que vem abaixo. 😏
+        </div>
+
+        <!-- ═══════════════ GERADOR ═══════════════ -->
+        <!-- LUZ -->
+        <div class="section" id="section-light">
+            <h2><span class="icon">🌗</span> Condição de Luz Original e Desejada</h2>
+            <div class="option-group" id="light-options">
+                <div class="option-btn" data-value="day-day">☀️ DIA → DIA</div>
+                <div class="option-btn" data-value="day-night">🌙 DIA → NOITE</div>
+                <div class="option-btn" data-value="night-night">🌃 NOITE → NOITE</div>
+                <div class="option-btn disabled" data-value="night-day">🚫 NOITE → DIA</div>
+            </div>
+            <div class="warning" id="warning-light"></div>
+        </div>
+
+        <!-- EQUIPAMENTO -->
+        <div class="section">
+            <h2><span class="icon">📷</span> Equipamento (Câmera + Lente)</h2>
+            <div class="option-group" id="equipment-options">
+                <div class="option-btn" data-value="compacta-barata">📦 Compacta Barata</div>
+                <div class="option-btn" data-value="ponto-shoot-premium">✨ Point-and-Shoot Premium</div>
+                <div class="option-btn" data-value="slr-amadora">🎯 SLR Amadora</div>
+                <div class="option-btn" data-value="descartavel">🗑️ Descartável</div>
+            </div>
+        </div>
+
+        <!-- FILME -->
+        <div class="section">
+            <h2><span class="icon">🎞️</span> Filme</h2>
+            <div class="option-group" id="film-options">
+                <div class="option-btn" data-value="fuji-superia-400">❄️ Fuji Superia 400</div>
+                <div class="option-btn" data-value="kodak-gold-200">☀️ Kodak Gold 200</div>
+                <div class="option-btn" data-value="kodak-ultramax-400">🔥 Kodak Ultramax 400</div>
+                <div class="option-btn" data-value="lomography-800">🌀 Lomography 800</div>
+                <div class="option-btn" data-value="ilford-hp5-400">🖤 Ilford HP5 400</div>
+            </div>
+        </div>
+
+        <!-- PAPEL -->
+        <div class="section">
+            <h2><span class="icon">🖨️</span> Tipo de Revelação e Papel</h2>
+            <div class="option-group" id="paper-options">
+                <div class="option-btn" data-value="frontier-lustre">🖼️ Fuji Frontier Lustre</div>
+                <div class="option-btn" data-value="noritsu-glossy">✨ Noritsu Glossy</div>
+                <div class="option-btn" data-value="ilford-pearl-bw">🖤 Ilford Pearl (P&B)</div>
+                <div class="option-btn" data-value="baryta-fine-art">🎨 Fine Art Baryta</div>
+            </div>
+        </div>
+
+        <!-- DATA -->
+        <div class="section">
+            <h2><span class="icon">📅</span> Data Impressa</h2>
+            <div class="input-row">
+                <label><input type="radio" name="date-option" value="sim" checked> Com data</label>
+                <label><input type="radio" name="date-option" value="personalizada"> Personalizada:</label>
+                <input type="text" id="custom-date" placeholder="05/07/2026" value="05/07/2026" style="max-width:160px;">
+                <label><input type="radio" name="date-option" value="nao"> Sem data</label>
+            </div>
+        </div>
+
+        <!-- IMPERFEIÇÕES -->
+        <div class="section">
+            <h2><span class="icon">🔧</span> Imperfeições e Defeitos</h2>
+            <div class="checkbox-group" id="flaws-options">
+                <div class="checkbox-btn" data-value="light-leak">💥 Light leak</div>
+                <div class="checkbox-btn" data-value="dust-scratches">✨ Poeira e riscos</div>
+                <div class="checkbox-btn" data-value="chemical-stain">🧪 Mancha química</div>
+                <div class="checkbox-btn" data-value="double-exposure">👻 Dupla exposição</div>
+                <div class="checkbox-btn" data-value="blurred-edge">🌀 Borda desfocada</div>
+                <div class="checkbox-btn" data-value="underexposed-corners">🌑 Vinheta forte</div>
+            </div>
+        </div>
+
+        <!-- EDIÇÃO -->
+        <div class="section">
+            <h2><span class="icon">✂️</span> Edição de Conteúdo (opcional)</h2>
+            <div class="input-row">
+                <textarea id="content-edit" placeholder="Ex: Remover o cigarro da mão esquerda. Mover o braço..."></textarea>
+            </div>
+            <p style="font-size:0.75rem;color:var(--text-secondary);margin-top:0.5rem;">Rostos NUNCA serão alterados.</p>
+        </div>
+
+        <!-- GERAR -->
+        <button class="generate-btn" id="generate-btn">⚡ Gerar Prompt Analógico</button>
+
+        <!-- SAÍDA -->
+        <div class="section" style="position:relative;">
+            <h2><span class="icon">📋</span> Prompt Final Gerado</h2>
+            <div class="output-box empty" id="output-box">
+                Seu prompt aparecerá aqui após a geração...
+            </div>
+            <button class="copy-btn" id="copy-btn" style="display:none;">📋 Copiar</button>
+        </div>
+
+        <!-- FEEDBACK -->
+        <div class="section feedback-box">
+            <h2><span class="icon">💌</span> Caixinha de Feedback, Sugestões & Reclamações</h2>
+            <label style="font-family:'Inter',sans-serif;font-size:0.84rem;color:var(--text-secondary);">Seu nome (opcional):</label>
+            <input type="text" id="feedback-name" placeholder="Anônimx">
+            <textarea id="feedback-message" placeholder="Escreva aqui suas ideias, sugestões ou reclamações..." rows="3"></textarea>
+            <button class="feedback-submit" id="feedback-submit">📨 Enviar Feedback</button>
+            <p class="feedback-status" id="feedback-status"></p>
+        </div>
+
+        <!-- BOTÃO ESPERTALHÕES -->
+        <div style="text-align:center;padding:0 0 2rem;">
+            <button class="hacker-btn" id="hacker-btn">
+                🕵️ Espertalhões registrem aqui seus comentários
+            </button>
+        </div>
+
+        <p class="footer-note">
+            © 2026 Entre Mundos Lab · Feito com 🔮 e boas vibes analógicas
+        </p>
+    </div>
+
+    <!-- ═══════════════ MODAL HACKER ═══════════════ -->
+    <div class="modal-overlay" id="hacker-modal">
+        <div class="modal">
+            <h3>🔐 DESAFIO DE AUTENTICAÇÃO HACKER</h3>
+            <p style="color:#aaa;font-size:0.88rem;font-family:'Inter',sans-serif;">
+                Para provar que você é um hacker avançado e merece deixar seu comentário,
+                resolva o desafio abaixo:
+            </p>
+            <div class="hash-display">
+                Descriptografe o hash SHA-256 abaixo e insira a<br>
+                string original em até <strong>60 segundos</strong>:<br><br>
+                <span style="color:var(--azul-ciano);">
+                    a7f8e9d6c5b4a3021fedcba9876543210<br>
+                    fedcba98765432100123456789abcdef<br>
+                    9f8e7d6c5b4a3021f0e9d8c7b6a50413
+                </span><br>
+                (Dica: a string original contém 37 caracteres,<br>
+                incluindo um emoji de gato e uma coordenada GPS<br>
+                de um local que não existe.)
+            </div>
+            <input type="text" id="hacker-answer" placeholder="Digite a string original...">
+            <div class="timer" id="hacker-timer">⏳ 01:00</div>
+            <button class="btn-danger" id="hacker-submit">ENVIAR RESPOSTA</button>
+            <button class="btn-close" id="hacker-close">😈 Desistir</button>
+            <div class="hacker-response" id="hacker-response"></div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // State
+            const state = {
+                light: null,
+                equipment: null,
+                film: null,
+                paper: null,
+                dateOption: 'sim',
+                customDate: '05/07/2026',
+                flaws: [],
+                contentEdit: ''
+            };
+            const analytics = {
+                pageLoad: Date.now(),
+                sectionTimes: {},
+                currentSection: null,
+                currentSectionStart: Date.now(),
+                promptsGenerated: 0,
+                lastPrompt: '',
+                selectionsLog: []
+            };
+
+            // DOM refs
+            const lightOptions = document.querySelectorAll('#light-options .option-btn:not(.disabled)');
+            const equipmentOptions = document.querySelectorAll('#equipment-options .option-btn');
+            const filmOptions = document.querySelectorAll('#film-options .option-btn');
+            const paperOptions = document.querySelectorAll('#paper-options .option-btn');
+            const flawButtons = document.querySelectorAll('#flaws-options .checkbox-btn');
+            const generateBtn = document.getElementById('generate-btn');
+            const outputBox = document.getElementById('output-box');
+            const copyBtn = document.getElementById('copy-btn');
+            const warningLight = document.getElementById('warning-light');
+            const feedbackName = document.getElementById('feedback-name');
+            const feedbackMessage = document.getElementById('feedback-message');
+            const feedbackSubmit = document.getElementById('feedback-submit');
+            const feedbackStatus = document.getElementById('feedback-status');
+            const hackerBtn = document.getElementById('hacker-btn');
+            const hackerModal = document.getElementById('hacker-modal');
+            const hackerClose = document.getElementById('hacker-close');
+            const hackerSubmitBtn = document.getElementById('hacker-submit');
+            const hackerResponse = document.getElementById('hacker-response');
+            const hackerTimer = document.getElementById('hacker-timer');
+            const hackerAnswer = document.getElementById('hacker-answer');
+
+            // Helpers
+            function clearSelection(g) { g.forEach(b => b.classList.remove('selected')); }
+            function getSelectedValue(buttons) {
+                const sel = Array.from(buttons).find(b => b.classList.contains('selected'));
+                return sel ? sel.dataset.value : null;
+            }
+            function getCheckedValues(buttons) {
+                return Array.from(buttons).filter(b => b.classList.contains('checked')).map(b => b.dataset
+            .value);
+            }
+            function updateState() {
+                state.light = getSelectedValue(lightOptions);
+                state.equipment = getSelectedValue(equipmentOptions);
+                state.film = getSelectedValue(filmOptions);
+                state.paper = getSelectedValue(paperOptions);
+                state.flaws = getCheckedValues(flawButtons);
+                state.contentEdit = document.getElementById('content-edit').value.trim();
+                const r = document.querySelector('input[name="date-option"]:checked');
+                state.dateOption = r ? r.value : 'sim';
+                state.customDate = document.getElementById('custom-date').value.trim() || '05/07/2026';
+            }
+            function logSelection(cat, val, act) {
+                analytics.selectionsLog.push({ category: cat, value: val, active: act, time: Date.now() });
+            }
+            function getTimeOnPage() {
+                const t = Math.floor((Date.now() - analytics.pageLoad) / 1000);
+                return `${Math.floor(t/60)}min ${t%60}s`;
+            }
+            function getSectionSummary() {
+                return Object.entries(analytics.sectionTimes).map(([k,v]) => `${k}: ${Math.floor(v/1000)}s`).join(
+                    ', ');
+            }
+
+            // Section tracking
+            const sections = document.querySelectorAll('.section, .logo-section, .greeting');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    const id = e.target.id || e.target.querySelector('h2')?.textContent || 'section';
+                    if (e.isIntersecting) {
+                        if (analytics.currentSection && analytics.currentSection !== id) {
+                            analytics.sectionTimes[analytics.currentSection] = (analytics.sectionTimes[
+                                analytics.currentSection] || 0) + (Date.now() - analytics
+                                .currentSectionStart);
+                        }
+                        analytics.currentSection = id;
+                        analytics.currentSectionStart = Date.now();
+                    } else {
+                        if (analytics.currentSection === id) {
+                            analytics.sectionTimes[id] = (analytics.sectionTimes[id] || 0) + (Date.now() -
+                                analytics.currentSectionStart);
+                            analytics.currentSection = null;
+                        }
+                    }
+                });
+            }, { threshold: 0.4 });
+            sections.forEach(s => observer.observe(s));
+
+            // Event listeners
+            lightOptions.forEach(b => b.addEventListener('click', () => { clearSelection(lightOptions);
+                b.classList.add('selected');
+                updateState();
+                logSelection('light', b.dataset.value, true); }));
+            equipmentOptions.forEach(b => b.addEventListener('click', () => { clearSelection(
+            equipmentOptions);
+                b.classList.add('selected');
+                updateState();
+                logSelection('equipment', b.dataset.value, true); }));
+            filmOptions.forEach(b => b.addEventListener('click', () => { clearSelection(filmOptions);
+                b.classList.add('selected');
+                updateState();
+                logSelection('film', b.dataset.value, true); }));
+            paperOptions.forEach(b => b.addEventListener('click', () => { clearSelection(paperOptions);
+                b.classList.add('selected');
+                updateState();
+                logSelection('paper', b.dataset.value, true); }));
+            flawButtons.forEach(b => b.addEventListener('click', () => { b.classList.toggle('checked');
+                updateState();
+                logSelection('flaw', b.dataset.value, b.classList.contains('checked')); }));
+            document.querySelectorAll('input[name="date-option"]').forEach(r => r.addEventListener('change',
+            updateState));
+            document.getElementById('custom-date').addEventListener('input', () => { state.customDate = document
+                    .getElementById('custom-date').value.trim(); });
+            document.getElementById('content-edit').addEventListener('input', () => { state.contentEdit = document
+                    .getElementById('content-edit').value.trim(); });
+
+            // Prompt builder
+            const filmD = {
+                'fuji-superia-400': 'filme Fuji Superia 400 (paleta fria, pele ciano, grão médio)',
+                'kodak-gold-200': 'filme Kodak Gold 200 (tom quente dourado, grão fino)',
+                'kodak-ultramax-400': 'filme Kodak Ultramax 400 (saturado, alto contraste)',
+                'lomography-800': 'filme Lomography 800 (grão grosso, cores deslocadas)',
+                'ilford-hp5-400': 'filme Ilford HP5 400 (P&B monocromático)'
+            };
+            const equipD = {
+                'compacta-barata': 'câmera compacta barata anos 90 (Kodak Star/Fuji Discovery), lente plástica, flash duro',
+                'ponto-shoot-premium': 'point-and-shoot premium (Olympus mju-II/Yashica T4), lente de vidro nítida',
+                'slr-amadora': 'SLR amadora (Canon EOS 300/Nikon F60), lente kit 35-80mm, nitidez superior',
+                'descartavel': 'descartável (Kodak FunSaver/Fuji QuickSnap), lente simples, vinheta forte'
+            };
+            const paperD = {
+                'frontier-lustre': 'Fuji Frontier, papel Crystal Archive Lustre semi‑mate, textura acetinada, margem 3mm',
+                'noritsu-glossy': 'Noritsu, papel Kodak Royal Supra Glossy, brilho intenso',
+                'ilford-pearl-bw': 'revelação caseira, Ilford Multigrade RC Pearl, margens irregulares',
+                'baryta-fine-art': 'Fine Art Baryta semi‑brilho, alta definição com grão analógico'
+            };
+            const flawsD = {
+                'light-leak': 'light leak vermelho/alaranjado nas bordas',
+                'dust-scratches': 'poeira e riscos no negativo',
+                'chemical-stain': 'mancha de revelação química azulada/acastanhada',
+                'double-exposure': 'dupla exposição fantasmagórica acidental',
+                'blurred-edge': 'borda desfocada por lente torta',
+                'underexposed-corners': 'vinheta forte nos cantos'
+            };
+
+            function buildPrompt() {
+                updateState();
+                if (!state.light || !state.equipment || !state.film || !state.paper)
+                    return '⚠️ Selecione todas as categorias obrigatórias.';
+                if (state.light === 'night-day') return '⚠️ NOITE → DIA não suportado.';
+                const isBW = state.film === 'ilford-hp5-400';
+                const isNight = state.light === 'night-night' || state.light === 'day-night';
+                let p = '';
+                p +=
+                    'Transforme a imagem de referência em uma fotografia analógica autêntica dos anos 90. ';
+                p += `Cena capturada com ${equipD[state.equipment]}, ${filmD[state.film]}. `;
+                if (state.light === 'day-night')
+                    p +=
+                    'A cena diurna original deve ser reinterpretada como noturna: ambiente escurece, postes e faróis acendem. ';
+                p +=
+                    'Pessoas, poses, expressões e enquadramento permanecem IDÊNTICOS ao original.\n\n';
+                p += '[LUZ E FLASH]\n';
+                if (isNight)
+                    p +=
+                    'Flash slow‑sync noturno: flash congela o primeiro plano; obturador aberto gera trilhas APENAS em luzes realmente móveis. Luzes fixas (postes, letreiros) ficam nítidas, só com halation e grão.\n';
+                else p += 'Cena diurna. Flash de preenchimento sutil. Sem trilhas.\n';
+                p += 'Regra absoluta: sem trilhas em luzes estáticas.\n\n';
+                p += '[ROSTOS]\nCada rosto é clone exato do original. Nenhuma alteração.\n\n';
+                if (state.contentEdit)
+                    p +=
+                    `[EDIÇÃO] Antes do estilo analógico: ${state.contentEdit}. Rostos intactos.\n\n`;
+                p += `[REVELAÇÃO] ${paperD[state.paper]}. Textura do papel visível.\n\n`;
+                if (state.flaws.length) {
+                    p += '[IMPERFEIÇÕES]\n';
+                    state.flaws.forEach(f => p += `- ${flawsD[f] || f}.\n`);
+                    p += '\n';
+                }
+                p += '[COR E GRÃO]\n';
+                if (isBW) p += 'Monocromático P&B, grão prateado.\n';
+                else p += `Paleta fiel ao ${filmD[state.film]}. `;
+                p += 'Grão orgânico, halation, aberração cromática nas bordas.\n\n';
+                let ds = state.dateOption === 'personalizada' ? state.customDate : (state.dateOption === 'sim' ?
+                    state.customDate : null);
+                if (ds) p += `[DATA] "${ds}" impressa no canto, estilo Kodak anos 90.\n\n`;
+                p +=
+                    '[ESTILO] Foto analógica vintage, câmera barata com flash, minilab anos 90, falhas autênticas.\n\n';
+                p +=
+                    '[NEGATIVE] Digital sharpness, HDR, DSLR moderno, plastic skin, rostos alterados, expressões mudadas, trilhas em luzes fixas, textura digital.\n\n';
+                p += '[AUDITORIA] Rostos OK? Trilhas só em móveis? Papel correto? Data OK? Refaça se não.';
+                return p;
+            }
+            generateBtn.addEventListener('click', () => {
+                const prompt = buildPrompt();
+                outputBox.textContent = prompt;
+                outputBox.classList.remove('empty');
+                copyBtn.style.display = 'block';
+                analytics.promptsGenerated++;
+                analytics.lastPrompt = prompt;
+            });
+            copyBtn.addEventListener('click', () => {
+                const t = outputBox.textContent;
+                if (!t || outputBox.classList.contains('empty')) return;
+                navigator.clipboard.writeText(t).then(() => { copyBtn.textContent = '✅ Copiado!';
+                    setTimeout(() => copyBtn.textContent = '📋 Copiar', 2000); }).catch(() => {
+                    const ta = document.createElement('textarea');
+                    ta.value = t;
+                    document.body.appendChild(ta);
+                    ta.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(ta);
+                    copyBtn.textContent = '✅ Copiado!';
+                    setTimeout(() => copyBtn.textContent = '📋 Copiar', 2000);
+                });
+            });
+
+            // Feedback
+            feedbackSubmit.addEventListener('click', () => {
+                const name = feedbackName.value.trim() || 'Anônimx';
+                const msg = feedbackMessage.value.trim();
+                if (!msg) { feedbackStatus.textContent = '⚠️ Escreva algo antes de enviar!';
+                    feedbackStatus.style.display = 'block';
+                    feedbackStatus.style.color = '#ef4444'; return; }
+                if (analytics.currentSection) {
+                    analytics.sectionTimes[analytics.currentSection] = (analytics.sectionTimes[analytics
+                        .currentSection] || 0) + (Date.now() - analytics.currentSectionStart);
+                    analytics.currentSection = null;
+                }
+                const report =
+                    `USABILIDADE:\n- Tempo na página: ${getTimeOnPage()}\n- Seções: ${getSectionSummary()}\n- Prompts gerados: ${analytics.promptsGenerated}\n- Último prompt: ${analytics.lastPrompt ? analytics.lastPrompt.substring(0,150)+'...' : 'Nenhum'}\n- Seleções: ${JSON.stringify(analytics.selectionsLog.slice(-8))}`;
+                feedbackStatus.textContent = '📨 Enviando...';
+                feedbackStatus.style.display = 'block';
+                feedbackStatus.style.color = '#eab308';
+                const formData = new FormData();
+                formData.append('name', name);
+                formData.append('message', msg);
+                formData.append('analytics', report);
+                formData.append('_subject',
+                    `[Entre Mundos Lab] Feedback de ${name} - ${new Date().toLocaleDateString('pt-BR')}`);
+                fetch('https://formspree.io/f/SEU_ID_AQUI', { method: 'POST', body: formData, headers: { 'Accept':
+                            'application/json' } })
+                    .then(r => {
+                        if (r.ok) { feedbackStatus.textContent =
+                            '✅ Feedback enviado! Obrigado, amiguinhx. 🔮';
+                            feedbackStatus.style.color = '#22c55e';
+                            feedbackMessage.value = '';
+                            feedbackName.value = ''; } else throw new Error();
+                    })
+                    .catch(() => {
+                        window.open(
+                            `mailto:alencar.seiti@gmail.com?subject=${encodeURIComponent('[Entre Mundos Lab] Feedback de '+name)}&body=${encodeURIComponent(msg+'\n\n---\n'+report)}`,
+                            '_blank');
+                        feedbackStatus.textContent = '📬 E-mail aberto. Envie por lá! (Fallback)';
+                        feedbackStatus.style.color = '#eab308';
+                    });
+            });
+
+            // Hacker modal
+            let hackerInterval, hackerSecs = 60;
+            hackerBtn.addEventListener('click', () => {
+                hackerModal.classList.add('active');
+                hackerSecs = 60;
+                hackerTimer.textContent = '⏳ 01:00';
+                hackerAnswer.value = '';
+                hackerResponse.classList.remove('show');
+                clearInterval(hackerInterval);
+                hackerInterval = setInterval(() => {
+                    hackerSecs--;
+                    if (hackerSecs <= 0) { hackerSecs = 0;
+                        hackerTimer.textContent = '⏳ 00:00';
+                        clearInterval(hackerInterval);
+                        hackerResponse.textContent =
+                            '⏰ TEMPO ESGOTADO. Use a caixinha normal. 😄';
+                        hackerResponse.classList.add('show'); } else {
+                        const m = Math.floor(hackerSecs / 60),
+                            s = hackerSecs % 60;
+                        hackerTimer.textContent =
+                            `⏳ ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+                    }
+                }, 1000);
+            });
+            hackerClose.addEventListener('click', () => { hackerModal.classList.remove('active');
+                clearInterval(hackerInterval); });
+            hackerModal.addEventListener('click', e => { if (e.target === hackerModal) { hackerModal.classList
+                    .remove('active');
+                    clearInterval(hackerInterval); } });
+            hackerSubmitBtn.addEventListener('click', () => { clearInterval(hackerInterval);
+                hackerResponse.textContent =
+                    '❌ RESPOSTA INCORRETA. HASH NÃO CORRESPONDE.\n\nFirewall violado. IP registrado.\n\n(Brincadeira. Use a caixinha normal. 😄)';
+                hackerResponse.classList.add('show');
+                hackerTimer.textContent = '⏳ 00:00'; });
+
+            // Defaults
+            (function setDefaults() {
+                const dl = Array.from(lightOptions).find(b => b.dataset.value === 'night-night');
+                if (dl) dl.click();
+                const de = Array.from(equipmentOptions).find(b => b.dataset.value === 'compacta-barata');
+                if (de) de.click();
+                const df = Array.from(filmOptions).find(b => b.dataset.value === 'fuji-superia-400');
+                if (df) df.click();
+                const dp = Array.from(paperOptions).find(b => b.dataset.value === 'frontier-lustre');
+                if (dp) dp.click();
+                document.querySelector('input[name="date-option"][value="sim"]').checked = true;
+                updateState();
+            })();
+        })();
+    </script>
+</body>
+</html>
