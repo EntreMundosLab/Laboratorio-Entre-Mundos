@@ -4,12 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Entre Mundos Lab</title>
-
-    <!-- Fontes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@400;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-
     <style>
         :root {
             --preto-absoluto: #000000;
@@ -51,87 +48,33 @@
             background-attachment: fixed;
         }
 
-        @keyframes vortexSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes vortexPulse {
-            0%, 100% { box-shadow: 0 0 30px rgba(255,42,133,0.5), 0 0 60px rgba(123,44,191,0.4), 0 0 90px rgba(0,240,255,0.2), inset 0 0 30px rgba(255,42,133,0.1); }
-            50% { box-shadow: 0 0 50px rgba(255,42,133,0.7), 0 0 100px rgba(123,44,191,0.6), 0 0 150px rgba(0,240,255,0.3), inset 0 0 50px rgba(123,44,191,0.2); }
-        }
-        @keyframes sparkle1 { 0%,100%{opacity:0.4;transform:scale(1);} 50%{opacity:1;transform:scale(1.5);} }
-        @keyframes sparkle2 { 0%,100%{opacity:1;transform:scale(1.3);} 50%{opacity:0.3;transform:scale(0.8);} }
-        @keyframes sparkle3 { 0%,100%{opacity:0.6;transform:scale(0.9);} 30%{opacity:1;transform:scale(1.6);} 60%{opacity:0.2;transform:scale(0.7);} }
         @keyframes fadeInUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
-        @keyframes glitchText {
-            0%,100%{text-shadow:2px 2px 0 var(--rosa-magenta),-2px -2px 0 var(--azul-ciano);}
-            25%{text-shadow:-2px 2px 0 var(--violeta-eletrico),2px -2px 0 var(--rosa-magenta);}
-            50%{text-shadow:2px -2px 0 var(--azul-ciano),-2px 2px 0 var(--violeta-eletrico);}
-            75%{text-shadow:-2px -2px 0 var(--rosa-magenta),2px 2px 0 var(--azul-ciano);}
-        }
-        @keyframes freqPulse { 0%,100%{opacity:0.5;} 50%{opacity:1;} }
 
         .container { max-width:960px; width:100%; display:flex; flex-direction:column; gap:2rem; padding:2rem 1rem 4rem; animation:fadeInUp 0.8s ease; }
 
-        /* LOGO */
-        .logo-section { text-align:center; padding:2.5rem 1rem 0.5rem; position:relative; }
-        .seal-container { position:relative; width:200px; height:200px; margin:0 auto 1.5rem; }
-        .seal-outer-ring {
-            position:absolute; inset:0; border-radius:50%; border:3px solid transparent;
-            background: conic-gradient(from 0deg, var(--rosa-magenta) 0deg, var(--violeta-eletrico) 90deg, var(--azul-ciano) 180deg, var(--violeta-eletrico) 270deg, var(--rosa-magenta) 360deg);
-            mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
-            -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
-            animation: vortexSpin 10s linear infinite;
-        }
-        .seal-glow { position:absolute; inset:-18px; border-radius:50%; animation:vortexPulse 3s ease-in-out infinite; pointer-events:none; z-index:-1; }
-        .seal-vortex {
-            position:absolute; inset:16px; border-radius:50%; overflow:hidden;
-            background: radial-gradient(circle at 35% 35%, rgba(255,42,133,0.5) 0%, rgba(123,44,191,0.5) 25%, rgba(74,14,78,0.7) 50%, rgba(0,0,0,0.95) 80%);
-            border:1px solid rgba(255,255,255,0.08);
-        }
-        .seal-spiral {
-            position:absolute; inset:-40%;
-            background: conic-gradient(from 0deg, transparent 0%, rgba(255,42,133,0.4) 10%, transparent 20%, rgba(0,240,255,0.3) 35%, transparent 45%, rgba(123,44,191,0.5) 60%, transparent 70%, rgba(255,42,133,0.3) 85%, transparent 100%);
-            animation: vortexSpin 15s linear infinite reverse; opacity:0.8;
-        }
-        .seal-spiral-2 {
-            position:absolute; inset:-20%;
-            background: conic-gradient(from 120deg, transparent 0%, rgba(0,240,255,0.35) 15%, transparent 30%, rgba(255,42,133,0.3) 50%, transparent 65%, rgba(123,44,191,0.4) 80%, transparent 100%);
-            animation: vortexSpin 9s linear infinite; opacity:0.7;
-        }
-        .seal-center {
-            position:absolute; inset:38%; border-radius:50%;
-            background: radial-gradient(circle, rgba(255,240,255,0.95) 0%, rgba(255,42,133,0.5) 30%, rgba(123,44,191,0.2) 60%, transparent 100%);
-            box-shadow: 0 0 25px rgba(255,200,230,0.5);
-        }
-        .sparkle { position:absolute; pointer-events:none; z-index:2; }
-        .sparkle::before, .sparkle::after { content:''; position:absolute; background:#fff; border-radius:2px; }
-        .sparkle::before { width:3px; height:14px; left:6px; top:-2px; box-shadow:0 0 6px var(--azul-ciano),0 0 12px var(--azul-ciano); }
-        .sparkle::after { width:14px; height:3px; left:0; top:4px; box-shadow:0 0 6px var(--rosa-magenta),0 0 12px var(--rosa-magenta); }
-        .sparkle-1 { top:-10px; right:15px; animation:sparkle1 2.5s ease-in-out infinite; }
-        .sparkle-2 { bottom:5px; left:-8px; animation:sparkle2 3.2s ease-in-out infinite; animation-delay:0.5s; }
-        .sparkle-3 { top:40px; left:-20px; animation:sparkle3 2.8s ease-in-out infinite; animation-delay:1.2s; }
-        .sparkle-4 { bottom:20px; right:-12px; animation:sparkle1 3.5s ease-in-out infinite; animation-delay:0.8s; }
-
-        .frequency-lines { display:flex; justify-content:center; align-items:flex-end; gap:3px; height:30px; margin:0 auto; opacity:0.7; }
-        .freq-bar { width:3px; border-radius:1px; background:var(--rosa-magenta); box-shadow:0 0 6px var(--rosa-magenta-glow); animation:freqPulse 1.5s ease-in-out infinite; }
-        .freq-bar:nth-child(odd) { background:var(--azul-ciano); box-shadow:0 0 6px var(--azul-ciano); animation-delay:0.3s; }
-        .freq-bar:nth-child(1){height:8px;animation-delay:0s;} .freq-bar:nth-child(2){height:18px;animation-delay:0.1s;}
-        .freq-bar:nth-child(3){height:28px;animation-delay:0.2s;} .freq-bar:nth-child(4){height:14px;animation-delay:0.05s;}
-        .freq-bar:nth-child(5){height:24px;animation-delay:0.35s;} .freq-bar:nth-child(6){height:10px;animation-delay:0.15s;}
-        .freq-bar:nth-child(7){height:20px;animation-delay:0.4s;} .freq-bar:nth-child(8){height:26px;animation-delay:0.25s;}
-        .freq-bar:nth-child(9){height:6px;animation-delay:0.5s;} .freq-bar:nth-child(10){height:16px;animation-delay:0.3s;}
-        .freq-bar:nth-child(11){height:22px;animation-delay:0.1s;} .freq-bar:nth-child(12){height:12px;animation-delay:0.45s;}
-        .freq-bar:nth-child(13){height:30px;animation-delay:0.55s;} .freq-bar:nth-child(14){height:8px;animation-delay:0.6s;}
-        .freq-bar:nth-child(15){height:18px;animation-delay:0.7s;}
-
-        .logo-text { font-family:'Orbitron',sans-serif; font-size:2.4rem; font-weight:900; letter-spacing:0.12em; text-transform:uppercase; color:#fff; animation:glitchText 5s ease-in-out infinite; line-height:1.1; margin-top:0.5rem; }
-        .logo-subtitle { font-family:'Space Grotesk',sans-serif; font-size:0.95rem; letter-spacing:0.25em; color:var(--azul-ciano); text-transform:uppercase; margin-top:0.4rem; font-weight:600; text-shadow:0 0 12px rgba(0,240,255,0.4); }
+        /* Logo */
+        .logo-section { text-align:center; padding:2rem 1rem 0.5rem; }
+        .logo-section img { max-width:280px; width:100%; height:auto; display:block; margin:0 auto 1rem; }
         .slogan { font-family:'Inter',sans-serif; font-size:0.9rem; color:var(--text-secondary); margin-top:0.5rem; font-style:italic; letter-spacing:0.04em; }
 
-        /* SAUDAÇÕES */
+        /* Saudação */
         .greeting { background:var(--surface-elevated); border:1px solid var(--border); border-left:4px solid var(--rosa-magenta); border-radius:0 12px 12px 0; padding:1.5rem 1.8rem; font-size:0.9rem; line-height:1.7; position:relative; box-shadow:0 4px 20px rgba(0,0,0,0.3); }
         .greeting::before { content:'🔮'; position:absolute; top:-16px; left:-12px; font-size:1.6rem; filter:drop-shadow(0 0 6px var(--violeta-eletrico)); }
         .greeting strong { color:var(--rosa-magenta); }
 
-        /* SEÇÕES */
+        /* Antes e Depois */
+        .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .comparison-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; text-align: center; }
+        .comparison-card img { width: 100%; height: auto; display: block; }
+        .comparison-label { padding: 0.5rem; font-family: 'Space Grotesk', sans-serif; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em; }
+        .label-original { background: #1a1a1a; color: #aaa; }
+        .label-em { background: rgba(0,240,255,0.15); color: var(--azul-ciano); }
+
+        @media (max-width: 500px) {
+            .comparison-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Seções */
         .section { background:var(--surface-elevated); border:1px solid var(--border); border-radius:16px; padding:1.5rem 1.8rem; transition:border-color 0.3s, box-shadow 0.3s; }
         .section:hover { border-color:rgba(255,42,133,0.4); box-shadow:0 0 25px rgba(255,42,133,0.08); }
         .section h2 { font-family:'Space Grotesk',sans-serif; font-size:1.05rem; font-weight:700; margin-bottom:1.2rem; color:var(--branco-ultravioleta); display:flex; align-items:center; gap:0.5rem; text-transform:uppercase; letter-spacing:0.08em; }
@@ -155,6 +98,7 @@
         .input-row input:focus, .input-row textarea:focus { outline:none; border-color:var(--azul-ciano); box-shadow:0 0 14px rgba(0,240,255,0.2); }
         textarea { min-height:70px; }
 
+        /* Botão Gerar */
         .generate-btn {
             background:linear-gradient(135deg, var(--rosa-magenta), var(--violeta-eletrico)); border:none; border-radius:14px;
             padding:1.1rem 2rem; font-family:'Orbitron',sans-serif; font-size:1.1rem; font-weight:700; color:#fff;
@@ -166,10 +110,17 @@
         .generate-btn:hover { box-shadow:0 12px 45px rgba(255,42,133,0.5); transform:translateY(-2px); }
         .generate-btn:active { transform:scale(0.97); }
 
-        .output-box { background:#08080d; border:1px solid var(--border); border-radius:16px; padding:1.8rem; font-family:'Courier New',monospace; font-size:0.83rem; white-space:pre-wrap; word-break:break-word; color:var(--text); line-height:1.7; max-height:500px; overflow-y:auto; position:relative; }
-        .output-box.empty { color:#555; text-align:center; font-style:italic; }
-        .copy-btn { position:absolute; top:1rem; right:1rem; background:var(--surface-elevated); border:1px solid var(--azul-ciano); border-radius:8px; padding:0.5rem 1rem; font-family:'Space Grotesk',sans-serif; font-size:0.78rem; cursor:pointer; color:var(--azul-ciano); transition:all 0.2s; text-transform:uppercase; }
-        .copy-btn:hover { background:rgba(0,240,255,0.1); box-shadow:0 0 15px rgba(0,240,255,0.3); color:#fff; }
+        /* Área de resultado */
+        .output-box { background:#08080d; border:1px solid var(--border); border-radius:16px; padding:1.8rem; text-align:center; }
+        .copy-btn {
+            background: var(--azul-ciano); border: none; border-radius: 12px; padding: 1rem 2rem;
+            font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight: 700; color: #000;
+            cursor: pointer; transition: all 0.3s; letter-spacing: 0.05em; text-transform: uppercase;
+            box-shadow: 0 0 20px rgba(0,240,255,0.4);
+        }
+        .copy-btn:hover { box-shadow: 0 0 35px rgba(0,240,255,0.7); transform: translateY(-2px); }
+        .copy-btn:active { transform: scale(0.95); }
+        .hidden-prompt-msg { color: var(--text-secondary); margin-bottom: 1rem; font-family: 'Inter', sans-serif; font-size: 0.9rem; }
 
         .feedback-box textarea, .feedback-box input { width:100%; background:var(--tag-bg); border:1px solid var(--border); border-radius:12px; padding:0.8rem 1rem; color:var(--branco-ultravioleta); font-family:'Inter',sans-serif; font-size:0.88rem; resize:vertical; margin-bottom:0.5rem; }
         .feedback-box textarea:focus, .feedback-box input:focus { outline:none; border-color:var(--azul-ciano); box-shadow:0 0 12px rgba(0,240,255,0.2); }
@@ -195,40 +146,43 @@
         .warning { background:rgba(239,68,68,0.1); border:1px solid var(--danger); border-radius:8px; padding:0.7rem 1rem; color:var(--danger); font-family:'Inter',sans-serif; font-size:0.83rem; display:none; margin-top:0.5rem; }
         .warning.visible { display:block; }
 
-        @media (max-width:600px) { .container{padding:1rem 0.5rem 3rem;} .section{padding:1rem 1.2rem;} .option-btn{min-width:100%;flex:1 1 100%;} .logo-text{font-size:1.6rem;letter-spacing:0.06em;} .seal-container{width:150px;height:150px;} }
+        @media (max-width:600px) { .container{padding:1rem 0.5rem 3rem;} .section{padding:1rem 1.2rem;} .option-btn{min-width:100%;flex:1 1 100%;} .logo-section img{max-width:220px;} }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- LOGO -->
         <header class="logo-section">
-            <div class="seal-container">
-                <div class="seal-glow"></div>
-                <div class="seal-outer-ring"></div>
-                <div class="seal-vortex">
-                    <div class="seal-spiral"></div>
-                    <div class="seal-spiral-2"></div>
-                    <div class="seal-center"></div>
-                </div>
-                <div class="sparkle sparkle-1"></div>
-                <div class="sparkle sparkle-2"></div>
-                <div class="sparkle sparkle-3"></div>
-                <div class="sparkle sparkle-4"></div>
-            </div>
-            <div class="frequency-lines">
-                <div class="freq-bar"></div><div class="freq-bar"></div><div class="freq-bar"></div><div class="freq-bar"></div><div class="freq-bar"></div><div class="freq-bar"></div><div class="freq-bar"></div><div class="freq-bar"></div><div class="freq-bar"></div><div class="freq-bar"></div><div class="freq-bar"></div><div class="freq-bar"></div><div class="freq-bar"></div><div class="freq-bar"></div><div class="freq-bar"></div>
-            </div>
-            <div class="logo-text">Entre Mundos Lab</div>
-            <div class="logo-subtitle">Laboratório Entre Mundos</div>
+            <img src="Entremundos-logo.PNG" alt="Entre Mundos Lab">
             <p class="slogan">✦ Aqui todas as suas ideias se tornam reais. ✦</p>
         </header>
 
+        <!-- SAUDAÇÃO ENGAJADORA -->
         <div class="greeting">
             Saudações, <strong>usuárix</strong>! 👽<br><br>
-            Se está aqui, é <strong>amiguinhx</strong> e poderá seguir. E não deixe de deixar seu <strong>feedback</strong> com ideias, sugestões, reclamações, na caixinha que vem logo após o prompt gerado para seu uso no ChatGPT. Isso é o <strong>mínimo</strong>. 🥲<br><br>
-            Escolhi para ChatGPT porque fica um prompt acessível, de uso fácil e gratuito. <em>(…)</em><br><br>
-            Para o caso de você <strong>não ser amiguinhx</strong>, fique à vontade, e deixe também seus comentários na caixinha que vem abaixo. 😏
+            Cansado de filtro digital que só coloca uma película fake por cima da sua foto?<br><br>
+            No <strong>Entre Mundos Lab</strong> a coisa é diferente: a gente <strong>recria sua foto como se ela tivesse sido tirada de verdade nos anos 90</strong>, com câmera barata, filme granulado, flash slow‑sync e revelação química de laboratório. Nada de maquiagem digital — é a sua imagem <strong>revelada em outro mundo</strong>.<br><br>
+            Dá uma olhada no exemplo aqui embaixo. Depois é só escolher suas opções, gerar o prompt e colar no ChatGPT junto com sua foto. <strong>O prompt é secreto e em inglês</strong> — qualidade máxima, curiosidade zero. 🔐<br><br>
+            Bora testar? O gerador está logo depois do antes e depois. ⚡
         </div>
 
+        <!-- ANTES E DEPOIS (1 exemplo) -->
+        <div class="section">
+            <h2>📸 Antes e Depois — O poder do prompt</h2>
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <img src="FotoAntes.png" alt="Foto original">
+                    <div class="comparison-label label-original">📱 Original</div>
+                </div>
+                <div class="comparison-card">
+                    <img src="FotoDepois.png" alt="Foto transformada pelo prompt">
+                    <div class="comparison-label label-em">🔮 Entre Mundos Lab</div>
+                </div>
+            </div>
+            <p style="font-size:0.8rem; color:var(--text-secondary); margin-top:1rem; text-align:center;">Mesma pessoa, mesma pose, mesma cena. Só mudou o mundo da fotografia.</p>
+        </div>
+
+        <!-- GERADOR -->
         <div class="section" id="section-light">
             <h2>🌗 Condição de Luz Original e Desejada</h2>
             <div class="option-group" id="light-options">
@@ -238,6 +192,15 @@
                 <div class="option-btn disabled" data-value="night-day">🚫 NOITE → DIA</div>
             </div>
             <div class="warning" id="warning-light"></div>
+        </div>
+
+        <div class="section" id="section-long-exposure" style="display:none;">
+            <h2>🌠 Longa Exposição (apenas cenas noturnas)</h2>
+            <div class="option-group" id="long-exposure-options">
+                <div class="option-btn" data-value="long-yes">✅ Sim — quero rastros de luz</div>
+                <div class="option-btn" data-value="long-no">❌ Não — cena congelada</div>
+            </div>
+            <p style="font-size:0.75rem;color:var(--text-secondary);margin-top:0.5rem;">Apenas luzes em movimento (faróis, lanternas) geram rastros. Postes e letreiros ficam estáticos.</p>
         </div>
 
         <div class="section">
@@ -301,17 +264,17 @@
             <p style="font-size:0.75rem;color:var(--text-secondary);margin-top:0.5rem;">Rostos NUNCA serão alterados.</p>
         </div>
 
-        <button class="generate-btn" id="generate-btn">⚡ Gerar Prompt Analógico</button>
+        <button class="generate-btn" id="generate-btn">⚡ Gerar Prompt Secreto</button>
 
-        <div class="section" style="position:relative;">
-            <h2>📋 Prompt Final Gerado</h2>
-            <div class="output-box empty" id="output-box">Seu prompt aparecerá aqui após a geração...</div>
-            <button class="copy-btn" id="copy-btn" style="display:none;">📋 Copiar</button>
+        <div class="output-box" id="output-box">
+            <p class="hidden-prompt-msg">✨ Seu prompt secreto está pronto! Ele está em inglês para garantir a melhor qualidade no ChatGPT.</p>
+            <button class="copy-btn" id="copy-btn">📋 Copiar Prompt Entre Mundos Lab</button>
+            <p style="font-size:0.75rem;color:var(--text-secondary);margin-top:1rem;">Depois de copiar, cole no ChatGPT junto com sua foto e veja a mágica.</p>
         </div>
 
         <div class="section feedback-box">
             <h2>💌 Caixinha de Feedback, Sugestões & Reclamações</h2>
-            <label style="font-family:'Inter',sans-serif;font-size:0.84rem;color:var(--text-secondary);">Seu nome (opcional):</label>
+            <label style="font-size:0.84rem;color:var(--text-secondary);">Seu nome (opcional):</label>
             <input type="text" id="feedback-name" placeholder="Anônimx">
             <textarea id="feedback-message" placeholder="Escreva aqui suas ideias, sugestões ou reclamações..." rows="3"></textarea>
             <button class="feedback-submit" id="feedback-submit">📨 Enviar Feedback</button>
@@ -325,22 +288,20 @@
         <p class="footer-note">© 2026 Entre Mundos Lab · Feito com 🔮 e boas vibes analógicas</p>
     </div>
 
+    <!-- MODAL HACKER -->
     <div class="modal-overlay" id="hacker-modal">
         <div class="modal">
             <h3>🔐 DESAFIO DE AUTENTICAÇÃO HACKER</h3>
-            <p style="color:#aaa;font-size:0.88rem;font-family:'Inter',sans-serif;">Para provar que você é um hacker avançado e merece deixar seu comentário, resolva o desafio abaixo:</p>
+            <p style="color:#aaa;font-size:0.88rem;">Para provar que você é um hacker avançado, resolva:</p>
             <div class="hash-display">
-                Descriptografe o hash SHA-256 abaixo e insira a<br>string original em até <strong>60 segundos</strong>:<br><br>
-                <span style="color:var(--azul-ciano);">
-                    a7f8e9d6c5b4a3021fedcba9876543210<br>
-                    fedcba98765432100123456789abcdef<br>
-                    9f8e7d6c5b4a3021f0e9d8c7b6a50413
-                </span><br>
-                (Dica: a string original contém 37 caracteres,<br>incluindo um emoji de gato e uma coordenada GPS<br>de um local que não existe.)
+                Descriptografe o hash SHA-256 abaixo em 60s:<br><br>
+                a7f8e9d6c5b4a3021fedcba9876543210<br>
+                fedcba98765432100123456789abcdef<br>
+                9f8e7d6c5b4a3021f0e9d8c7b6a50413
             </div>
-            <input type="text" id="hacker-answer" placeholder="Digite a string original...">
+            <input type="text" id="hacker-answer" placeholder="String original...">
             <div class="timer" id="hacker-timer">⏳ 01:00</div>
-            <button class="btn-danger" id="hacker-submit">ENVIAR RESPOSTA</button>
+            <button class="btn-danger" id="hacker-submit">ENVIAR</button>
             <button class="btn-close" id="hacker-close">😈 Desistir</button>
             <div class="hacker-response" id="hacker-response"></div>
         </div>
@@ -348,38 +309,49 @@
 
     <script>
         (function() {
-            var state = { light: null, equipment: null, film: null, paper: null, dateOption: 'sim', customDate: '05/07/2026', flaws: [], contentEdit: '' };
-            var analytics = { pageLoad: Date.now(), sectionTimes: {}, currentSection: null, currentSectionStart: Date.now(), promptsGenerated: 0, lastPrompt: '', selectionsLog: [] };
-
+            var state = { light: null, equipment: null, film: null, paper: null, dateOption: 'sim', customDate: '05/07/2026', flaws: [], contentEdit: '', longExposure: 'long-no' };
             var lightOptions = document.querySelectorAll('#light-options .option-btn:not(.disabled)');
             var equipmentOptions = document.querySelectorAll('#equipment-options .option-btn');
             var filmOptions = document.querySelectorAll('#film-options .option-btn');
             var paperOptions = document.querySelectorAll('#paper-options .option-btn');
             var flawButtons = document.querySelectorAll('#flaws-options .checkbox-btn');
-            var outputBox = document.getElementById('output-box');
+            var longExposureOptions = document.querySelectorAll('#long-exposure-options .option-btn');
             var copyBtn = document.getElementById('copy-btn');
-            var feedbackStatus = document.getElementById('feedback-status');
-            var hackerModal = document.getElementById('hacker-modal');
-            var hackerTimer = document.getElementById('hacker-timer');
-            var hackerResponse = document.getElementById('hacker-response');
-            var hackerInterval, hackerSecs = 60;
 
             function clearSelection(g) { g.forEach(function(b) { b.classList.remove('selected'); }); }
             function getSelected(btns) { var s = Array.from(btns).find(function(b) { return b.classList.contains('selected'); }); return s ? s.dataset.value : null; }
             function getChecked(btns) { return Array.from(btns).filter(function(b) { return b.classList.contains('checked'); }).map(function(b) { return b.dataset.value; }); }
+
             function updateState() {
-                state.light = getSelected(lightOptions); state.equipment = getSelected(equipmentOptions);
-                state.film = getSelected(filmOptions); state.paper = getSelected(paperOptions);
+                state.light = getSelected(lightOptions);
+                state.equipment = getSelected(equipmentOptions);
+                state.film = getSelected(filmOptions);
+                state.paper = getSelected(paperOptions);
                 state.flaws = getChecked(flawButtons);
                 state.contentEdit = document.getElementById('content-edit').value.trim();
                 var r = document.querySelector('input[name="date-option"]:checked');
                 state.dateOption = r ? r.value : 'sim';
                 state.customDate = document.getElementById('custom-date').value.trim() || '05/07/2026';
+                state.longExposure = getSelected(longExposureOptions) || 'long-no';
+            }
+
+            function toggleLongExposure() {
+                var s = document.getElementById('section-long-exposure');
+                if (state.light === 'night-night' || state.light === 'day-night') {
+                    s.style.display = 'block';
+                } else {
+                    s.style.display = 'none';
+                    state.longExposure = 'long-no';
+                    longExposureOptions.forEach(function(b) { b.classList.remove('selected'); });
+                    var def = Array.from(longExposureOptions).find(function(b) { return b.dataset.value === 'long-no'; });
+                    if (def) def.classList.add('selected');
+                }
             }
 
             lightOptions.forEach(function(b) { b.addEventListener('click', function() { clearSelection(lightOptions);
                     b.classList.add('selected');
-                    updateState(); }); });
+                    updateState();
+                    toggleLongExposure(); }); });
             equipmentOptions.forEach(function(b) { b.addEventListener('click', function() { clearSelection(equipmentOptions);
                     b.classList.add('selected');
                     updateState(); }); });
@@ -391,111 +363,129 @@
                     updateState(); }); });
             flawButtons.forEach(function(b) { b.addEventListener('click', function() { b.classList.toggle('checked');
                     updateState(); }); });
+            longExposureOptions.forEach(function(b) { b.addEventListener('click', function() { clearSelection(longExposureOptions);
+                    b.classList.add('selected');
+                    state.longExposure = b.dataset.value; }); });
             document.querySelectorAll('input[name="date-option"]').forEach(function(r) { r.addEventListener('change', updateState); });
             document.getElementById('custom-date').addEventListener('input', function() { state.customDate = document.getElementById('custom-date').value.trim(); });
             document.getElementById('content-edit').addEventListener('input', function() { state.contentEdit = document.getElementById('content-edit').value.trim(); });
 
-            var filmD = { 'fuji-superia-400': 'filme Fuji Superia 400 (paleta fria, pele ciano)', 'kodak-gold-200': 'filme Kodak Gold 200 (tom quente dourado)', 'kodak-ultramax-400': 'filme Kodak Ultramax 400 (saturado)', 'lomography-800': 'filme Lomography 800 (grão grosso)', 'ilford-hp5-400': 'filme Ilford HP5 400 (P&B)' };
-            var equipD = { 'compacta-barata': 'câmera compacta barata anos 90 (Kodak Star/Fuji Discovery)', 'ponto-shoot-premium': 'point-and-shoot premium (Olympus mju-II/Yashica T4)', 'slr-amadora': 'SLR amadora (Canon EOS 300/Nikon F60)', 'descartavel': 'descartável (Kodak FunSaver/Fuji QuickSnap)' };
-            var paperD = { 'frontier-lustre': 'Fuji Frontier, papel Crystal Archive Lustre semi‑mate', 'noritsu-glossy': 'Noritsu, papel Kodak Royal Supra Glossy', 'ilford-pearl-bw': 'Ilford Multigrade RC Pearl (revelação caseira)', 'baryta-fine-art': 'Fine Art Baryta semi‑brilho' };
-            var flawsD = { 'light-leak': 'light leak vermelho/alaranjado', 'dust-scratches': 'poeira e riscos', 'chemical-stain': 'mancha química azulada', 'double-exposure': 'dupla exposição fantasma', 'blurred-edge': 'borda desfocada', 'underexposed-corners': 'vinheta forte' };
-
-            function buildPrompt() {
+            function buildPromptEnglish() {
                 updateState();
-                if (!state.light || !state.equipment || !state.film || !state.paper) return '⚠️ Selecione todas as categorias obrigatórias.';
-                if (state.light === 'night-day') return '⚠️ NOITE → DIA não suportado.';
+                if (!state.light || !state.equipment || !state.film || !state.paper) return 'Please select all required options.';
                 var isBW = state.film === 'ilford-hp5-400';
                 var isNight = state.light === 'night-night' || state.light === 'day-night';
-                var p = 'Transforme a imagem de referência em uma fotografia analógica autêntica dos anos 90. ';
-                p += 'Cena capturada com ' + equipD[state.equipment] + ', ' + filmD[state.film] + '. ';
-                if (state.light === 'day-night') p += 'A cena diurna original deve ser reinterpretada como noturna: ambiente escurece, postes e faróis acendem. ';
-                p += 'Pessoas, poses, expressões e enquadramento permanecem IDÊNTICOS ao original.\n\n';
-                p += '[LUZ E FLASH]\n';
-                if (isNight) p += 'Flash slow‑sync noturno: flash congela o primeiro plano; obturador aberto gera trilhas APENAS em luzes realmente móveis. Luzes fixas (postes, letreiros) ficam nítidas, só com halation e grão.\n';
-                else p += 'Cena diurna. Flash de preenchimento sutil. Sem trilhas.\n';
-                p += 'Regra absoluta: sem trilhas em luzes estáticas.\n\n[ROSTOS]\nCada rosto é clone exato do original.\n\n';
-                if (state.contentEdit) p += '[EDIÇÃO] Antes do estilo analógico: ' + state.contentEdit + '. Rostos intactos.\n\n';
-                p += '[REVELAÇÃO] ' + paperD[state.paper] + '. Textura do papel visível.\n\n';
-                if (state.flaws.length) { p += '[IMPERFEIÇÕES]\n';
-                    state.flaws.forEach(function(f) { p += '- ' + (flawsD[f] || f) + '.\n'; });
-                    p += '\n'; }
-                p += '[COR E GRÃO]\n';
-                if (isBW) p += 'Monocromático P&B, grão prateado.\n';
-                else p += 'Paleta fiel ao ' + filmD[state.film] + '. ';
-                p += 'Grão orgânico, halation, aberração cromática nas bordas.\n\n';
-                var ds = state.dateOption === 'personalizada' ? state.customDate : (state.dateOption === 'sim' ? state.customDate : null);
-                if (ds) p += '[DATA] "' + ds + '" impressa no canto, estilo Kodak anos 90.\n\n';
-                p += '[ESTILO] Foto analógica vintage, câmera barata com flash, minilab anos 90, falhas autênticas.\n\n';
-                p += '[NEGATIVE] Digital sharpness, HDR, DSLR moderno, plastic skin, rostos alterados, expressões mudadas, trilhas em luzes fixas.\n\n[AUDITORIA] Rostos OK? Trilhas só em móveis? Papel correto? Refaça se não.';
+                var p = 'Transform this photo into an authentic 90s analog film photograph. ';
+                p += 'Captured with a ' + ({
+                    'compacta-barata': 'cheap point-and-shoot (Kodak Star/Fuji Discovery), plastic lens, harsh flash',
+                    'ponto-shoot-premium': 'premium point-and-shoot (Olympus mju-II/Yashica T4), sharp glass lens',
+                    'slr-amadora': 'amateur SLR (Canon EOS 300/Nikon F60), kit lens, fine grain',
+                    'descartavel': 'disposable camera (Kodak FunSaver), strong vignette, heavy grain'
+                })[state.equipment] + '. ';
+                p += 'Film: ' + ({
+                    'fuji-superia-400': 'Fuji Superia 400 (cool tones, cyan skin, medium grain)',
+                    'kodak-gold-200': 'Kodak Gold 200 (warm golden tones, fine grain)',
+                    'kodak-ultramax-400': 'Kodak Ultramax 400 (saturated, high contrast)',
+                    'lomography-800': 'Lomography 800 (heavy grain, shifted colors)',
+                    'ilford-hp5-400': 'Ilford HP5 400 (black and white, classic silver grain)'
+                })[state.film] + '. ';
+                if (state.light === 'day-night') p += 'Convert the daytime scene into a realistic night scene. ';
+                p += 'Keep all people, poses, and expressions EXACTLY identical to the original. ';
+                if (isNight && state.longExposure === 'long-yes') {
+                    p += 'Nighttime slow-sync flash + long exposure. Light trails ONLY from moving lights (car headlights, flashlights). Fixed lights (street lamps, signs) remain sharp with halation only. ';
+                } else if (isNight) {
+                    p += 'Nighttime slow-sync flash, no long exposure. ';
+                }
+                p += 'Printed on ' + ({
+                    'frontier-lustre': 'Fuji Frontier, Crystal Archive Lustre paper, semi-matte, white border',
+                    'noritsu-glossy': 'Noritsu, Kodak Royal Supra Glossy',
+                    'ilford-pearl-bw': 'Ilford Multigrade RC Pearl, darkroom print',
+                    'baryta-fine-art': 'Fine Art Baryta, semi-gloss'
+                })[state.paper] + '. ';
+                if (state.flaws.length) state.flaws.forEach(function(f) { p += ({
+                    'light-leak': 'red/orange light leak. ',
+                    'dust-scratches': 'dust and scratches. ',
+                    'chemical-stain': 'chemical stain. ',
+                    'double-exposure': 'faint ghost double exposure. ',
+                    'blurred-edge': 'blurred edge. ',
+                    'underexposed-corners': 'strong vignette. '
+                })[f] || ''; });
+                var ds = state.dateOption !== 'nao' ? state.customDate : null;
+                if (ds) p += 'Date stamp "' + ds + '" in Kodak style. ';
+                p += 'Organic grain, halation, chromatic aberration, authentic analog texture.';
                 return p;
             }
 
             document.getElementById('generate-btn').addEventListener('click', function() {
-                var prompt = buildPrompt();
-                outputBox.textContent = prompt;
-                outputBox.classList.remove('empty');
-                copyBtn.style.display = 'block';
-                analytics.promptsGenerated++;
-                analytics.lastPrompt = prompt;
+                copyBtn.setAttribute('data-prompt', buildPromptEnglish());
+                document.getElementById('output-box').scrollIntoView({ behavior: 'smooth' });
             });
 
             copyBtn.addEventListener('click', function() {
-                var t = outputBox.textContent;
-                if (!t || outputBox.classList.contains('empty')) return;
-                navigator.clipboard.writeText(t).then(function() { copyBtn.textContent = '✅ Copiado!';
-                    setTimeout(function() { copyBtn.textContent = '📋 Copiar'; }, 2000); }).catch(function() {
+                var prompt = copyBtn.getAttribute('data-prompt');
+                if (!prompt || prompt === 'Please select all required options.') {
+                    alert('⚠️ Preencha todas as opções obrigatórias antes de copiar.');
+                    return;
+                }
+                navigator.clipboard.writeText(prompt).then(function() {
+                    copyBtn.textContent = '✅ Copiado!';
+                    setTimeout(function() { copyBtn.textContent = '📋 Copiar Prompt Entre Mundos Lab'; }, 2000);
+                }).catch(function() {
                     var ta = document.createElement('textarea');
-                    ta.value = t;
+                    ta.value = prompt;
                     document.body.appendChild(ta);
                     ta.select();
                     document.execCommand('copy');
                     document.body.removeChild(ta);
                     copyBtn.textContent = '✅ Copiado!';
-                    setTimeout(function() { copyBtn.textContent = '📋 Copiar'; }, 2000); });
+                    setTimeout(function() { copyBtn.textContent = '📋 Copiar Prompt Entre Mundos Lab'; }, 2000);
+                });
             });
 
+            // Feedback
             document.getElementById('feedback-submit').addEventListener('click', function() {
                 var name = document.getElementById('feedback-name').value.trim() || 'Anônimx';
                 var msg = document.getElementById('feedback-message').value.trim();
-                if (!msg) { feedbackStatus.textContent = '⚠️ Escreva algo antes de enviar!';
-                    feedbackStatus.style.display = 'block';
-                    feedbackStatus.style.color = '#ef4444'; return; }
-                feedbackStatus.textContent = '📨 Enviando...';
-                feedbackStatus.style.display = 'block';
-                feedbackStatus.style.color = '#eab308';
-                var report = 'USABILIDADE:\n- Tempo na página: ' + Math.floor((Date.now() - analytics.pageLoad) / 1000) + 's\n- Prompts gerados: ' + analytics.promptsGenerated;
+                if (!msg) { var fs = document.getElementById('feedback-status');
+                    fs.textContent = '⚠️ Escreva algo!';
+                    fs.style.display = 'block';
+                    fs.style.color = '#ef4444'; return; }
+                var fs = document.getElementById('feedback-status');
+                fs.textContent = '📨 Enviando...';
+                fs.style.display = 'block';
+                fs.style.color = '#eab308';
                 var formData = new FormData();
                 formData.append('name', name);
                 formData.append('message', msg);
-                formData.append('analytics', report);
                 formData.append('_subject', '[Entre Mundos Lab] Feedback de ' + name);
                 fetch('https://formspree.io/f/SEU_ID_AQUI', { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } })
-                    .then(function(r) {
-                        if (r.ok) { feedbackStatus.textContent = '✅ Feedback enviado! Obrigado, amiguinhx. 🔮';
-                            feedbackStatus.style.color = '#22c55e';
+                    .then(function(r) { if (r.ok) { fs.textContent = '✅ Enviado! Obrigado. 🔮';
+                            fs.style.color = '#22c55e';
                             document.getElementById('feedback-message').value = '';
                             document.getElementById('feedback-name').value = ''; } else throw new Error(); })
-                    .catch(function() { window.open('mailto:alencar.seiti@gmail.com?subject=' + encodeURIComponent('[Entre Mundos Lab] Feedback de ' + name) + '&body=' + encodeURIComponent(msg + '\n\n---\n' + report), '_blank');
-                        feedbackStatus.textContent = '📬 E-mail aberto. Envie por lá!';
-                        feedbackStatus.style.color = '#eab308'; });
+                    .catch(function() { window.open('mailto:alencar.seiti@gmail.com?subject=' + encodeURIComponent('[Entre Mundos Lab] Feedback de ' + name) + '&body=' + encodeURIComponent(msg), '_blank');
+                        fs.textContent = '📬 E-mail aberto. Envie por lá!';
+                        fs.style.color = '#eab308'; });
             });
 
+            // Hacker modal
+            var hackerModal = document.getElementById('hacker-modal');
+            var hackerInterval, hackerSecs = 60;
             document.getElementById('hacker-btn').addEventListener('click', function() {
                 hackerModal.classList.add('active');
                 hackerSecs = 60;
-                hackerTimer.textContent = '⏳ 01:00';
+                document.getElementById('hacker-timer').textContent = '⏳ 01:00';
                 document.getElementById('hacker-answer').value = '';
-                hackerResponse.classList.remove('show');
+                document.getElementById('hacker-response').classList.remove('show');
                 clearInterval(hackerInterval);
                 hackerInterval = setInterval(function() {
                     hackerSecs--;
-                    if (hackerSecs <= 0) { hackerSecs = 0;
-                        hackerTimer.textContent = '⏳ 00:00';
-                        clearInterval(hackerInterval);
-                        hackerResponse.textContent = '⏰ TEMPO ESGOTADO. Use a caixinha normal. 😄';
-                        hackerResponse.classList.add('show'); } else { var m = Math.floor(hackerSecs / 60),
+                    if (hackerSecs <= 0) { clearInterval(hackerInterval);
+                        document.getElementById('hacker-timer').textContent = '⏳ 00:00';
+                        document.getElementById('hacker-response').textContent = '⏰ Tempo esgotado. Use a caixinha normal. 😄';
+                        document.getElementById('hacker-response').classList.add('show'); } else { var m = Math.floor(hackerSecs / 60),
                             s = hackerSecs % 60;
-                        hackerTimer.textContent = '⏳ ' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0'); }
+                        document.getElementById('hacker-timer').textContent = '⏳ ' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0'); }
                 }, 1000);
             });
             document.getElementById('hacker-close').addEventListener('click', function() { hackerModal.classList.remove('active');
@@ -503,21 +493,18 @@
             hackerModal.addEventListener('click', function(e) { if (e.target === hackerModal) { hackerModal.classList.remove('active');
                     clearInterval(hackerInterval); } });
             document.getElementById('hacker-submit').addEventListener('click', function() { clearInterval(hackerInterval);
-                hackerResponse.textContent = '❌ RESPOSTA INCORRETA. HASH NÃO CORRESPONDE.\n\nFirewall violado. IP registrado.\n\n(Brincadeira. Use a caixinha normal. 😄)';
-                hackerResponse.classList.add('show');
-                hackerTimer.textContent = '⏳ 00:00'; });
+                document.getElementById('hacker-response').textContent = '❌ Resposta incorreta.\n\nFirewall violado. (Brincadeira. 😄)';
+                document.getElementById('hacker-response').classList.add('show');
+                document.getElementById('hacker-timer').textContent = '⏳ 00:00'; });
 
             // Defaults
             (function() {
-                var dl = Array.from(lightOptions).find(function(b) { return b.dataset.value === 'night-night'; });
-                if (dl) dl.click();
-                var de = Array.from(equipmentOptions).find(function(b) { return b.dataset.value === 'compacta-barata'; });
-                if (de) de.click();
-                var df = Array.from(filmOptions).find(function(b) { return b.dataset.value === 'fuji-superia-400'; });
-                if (df) df.click();
-                var dp = Array.from(paperOptions).find(function(b) { return b.dataset.value === 'frontier-lustre'; });
-                if (dp) dp.click();
+                var dl = Array.from(lightOptions).find(function(b) { return b.dataset.value === 'night-night'; }); if (dl) dl.click();
+                var de = Array.from(equipmentOptions).find(function(b) { return b.dataset.value === 'compacta-barata'; }); if (de) de.click();
+                var df = Array.from(filmOptions).find(function(b) { return b.dataset.value === 'fuji-superia-400'; }); if (df) df.click();
+                var dp = Array.from(paperOptions).find(function(b) { return b.dataset.value === 'frontier-lustre'; }); if (dp) dp.click();
                 document.querySelector('input[name="date-option"][value="sim"]').checked = true;
+                toggleLongExposure();
                 updateState();
             })();
         })();
